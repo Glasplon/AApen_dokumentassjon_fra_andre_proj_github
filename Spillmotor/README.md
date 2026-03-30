@@ -52,28 +52,28 @@ The GenerateNormalsFromHeightmap function supports seamless texture tiling, so i
 Note that normals are made in the newer style, DirectX, which tools such as Unreal and most modern game engines use, where y (G value) being 0 indicates that a sufrace is pointing up (top of screen), which is flipped to how it is many older tools, like Blender and OpenGL, where G = 255 means the surface is pointing up and G = 0 means the surface is pointing down.
 
 ### Function: GenerateNoiseTextureColor
-This public function returns pure ColorNoise in the form of a Texture2D with the given size, and takes in ```int width```, ```int height```
+This public function returns pure ColorNoise in the form of a Texture2D with the given size, and takes in ```int width```, ```int height``` and ```Random rng```, your random function.
 
 ### Function: GenerateNoiseHeight
-This public function returns pure noise in float 0-1 in the form of a float Grid ```[width,height]```, and takes in ```int width```, ```int height```.
+This public function returns pure noise in float 0-1 in the form of a float Grid ```[width,height]```, and takes in ```int width```, ```int height``` and ```Random rng```, your random function.
 
 ### Function: GeneratePerlinNoiseTexture
-This public function returns perlin noise in Color black```#000000``` - white ```#ffffff```in the form of a Texture2D ```Texture2D[width*height]```, and takes in ```int width```, ```int height``` and ```int size```. It gives out a heightmap-like Texture2D of random perlin noise, with size being the amount of detail, where ```size * size``` is the size of the array of vectors used to generate the perlin noise. the ```size``` should be >= 2 to not get errors, though a size of 2 gives little value. ```size``` should be < width or height, values higher than that are effectivley random noise.
+This public function returns perlin noise in Color black```#000000``` - white ```#ffffff```in the form of a Texture2D ```Texture2D[width*height]```, and takes in ```int width```, ```int height```, ```int size``` and ```Random rng```. It gives out a heightmap-like Texture2D of random perlin noise, with size being the amount of detail, where ```size * size``` is the size of the array of vectors used to generate the perlin noise. the ```size``` should be >= 2 to not get errors, though a size of 2 gives little value. ```size``` should be < width or height, values higher than that are effectivley random noise.
 
 - This function tiles.
 
 ### Function: GeneratePerlinNoise2LTexture
-This public function returns perlin noise in Color black```#000000``` - white ```#ffffff```in the form of a Texture2D ```Texture2D[width*height]```, and takes in ```int width```, ```int height``` and ```int size```. It gives out a heightmap-like Texture2D of random perlin noise, made up of two Perlin layers stacked, layer one where```size * size``` is the size of the array of vectors used to generate the perlin noise, and the second layer is 2 times the vectors. the ```size``` should be >= 2 to not get errors. ```size``` should be < width or height, values higher than that are effectivley random noise.
+This public function returns perlin noise in Color black```#000000``` - white ```#ffffff```in the form of a Texture2D ```Texture2D[width*height]```, and takes in ```int width```, ```int height```, ```int size``` and ```Random rng```. It gives out a heightmap-like Texture2D of random perlin noise, made up of two Perlin layers stacked, layer one where```size * size``` is the size of the array of vectors used to generate the perlin noise, and the second layer is 2 times the vectors. the ```size``` should be >= 2 to not get errors. ```size``` should be < width or height, values higher than that are effectivley random noise.
 
 - This function tiles.
 
 ### Function: GeneratePerlinNoiseHeightMap
-This public function returns perlin noise in float 0-1 in the form of a float Grid ```[width,height]```, and takes in ```int width```, ```int height``` and ```int size```. It gives out a heightmap of random perlin noise, with size being the amount of detail, where ```size * size``` is the size of the array of vectors used to generate the perlin noise. the ```size``` should be >= 2 to not get errors, though a size of 2 gives little value. ```size``` should be < width or height, values higher than that are effectivley random noise. The noise values range from 0-1, but some settings (still being worked on) might make the output get to > 1 or < 0 in the extremes, so it is wise to use a clamp after this function if needed. 
+This public function returns perlin noise in float 0-1 in the form of a float Grid ```[width,height]```, and takes in ```int width```, ```int height```, ```int size``` and ```Random rng```. It gives out a heightmap of random perlin noise, with size being the amount of detail, where ```size * size``` is the size of the array of vectors used to generate the perlin noise. the ```size``` should be >= 2 to not get errors, though a size of 2 gives little value. ```size``` should be < width or height, values higher than that are effectivley random noise. The noise values range from 0-1, but some settings (still being worked on) might make the output get to > 1 or < 0 in the extremes, so it is wise to use a clamp after this function if needed. 
 
 - This function tiles.
 
 ### Function: GeneratePerlinNoise2LHeightMap
-This public function returns perlin noise in float 0-1 in the form of a float Grid ```[width,height]```, and takes in ```int width```, ```int height``` and ```int size```. It gives out a heightmap of random perlin noise, made up of two Perlin layers stacked, layer one where```size * size``` is the size of the array of vectors used to generate the perlin noise, and the second layer is 2 times the vectors. the ```size``` should be >= 2 to not get errors. ```size``` should be < width or height, values higher than that are effectivley random noise. The noise values range from 0-1, but some settings (still being worked on) might make the output get to > 1 or < 0 in the extremes, so it is wise to use a clamp after this function if needed. 
+This public function returns perlin noise in float 0-1 in the form of a float Grid ```[width,height]```, and takes in ```int width```, ```int height```, ```int size``` and ```Random rng```. It gives out a heightmap of random perlin noise, made up of two Perlin layers stacked, layer one where```size * size``` is the size of the array of vectors used to generate the perlin noise, and the second layer is 2 times the vectors. the ```size``` should be >= 2 to not get errors. ```size``` should be < width or height, values higher than that are effectivley random noise. The noise values range from 0-1, but some settings (still being worked on) might make the output get to > 1 or < 0 in the extremes, so it is wise to use a clamp after this function if needed. 
 
 - This function tiles.
 
@@ -96,6 +96,9 @@ This public function multiplies a `float` with every value in a Heightmap `float
 ### Function: clampHeightmap
 This public function clamps all values in a Heightmap `float[,]` to the normalized range [0, 1]. It takes in one Heightmap `float[,]` and returns one heightmap `float[,]` of equal size. Any value below `0` will be set to `0`, and any value above `1` will be set to `1`. This is useful for normalizing heightmaps that have been produced by operations such as `addHeightmap` or `multiplyHeightmap`, which may produce out-of-range values.
 
+### Function GradientHeightmap
+This public function returns a heightmap `float[,]` with a linear gradient running either horizontally or vertically, going from `startValue` to `endValue`. It takes in `int width`, `int height`, `float startValue`, `float endValue` and `bool horizontal`. If `horizontal` is true the gradient runs left to right, otherwise top to bottom. Accepts any float values for start and end, so the output range mirrors whatever is passed in.
+
 ### Function: Border
 This public function returns a heightmap `float[,]` with a hard rectangular border, where border pixels are set to `0` and interior pixels are set to `1`. It takes in `int width`, `int height`, `int borderHorWidth` and `int borderUpWidth`, where `borderHorWidth` controls the thickness of the left and right borders, and `borderUpWidth` controls the thickness of the top and bottom borders. The border thickness is clamped to never exceed the dimensions of the heightmap.
 
@@ -110,8 +113,24 @@ This public function returns a heightmap `float[,]` in a brick-lay pattern, wher
 
 - This function tiles.
 
-### Function GradientHeightmap
-This public function returns a heightmap `float[,]` with a linear gradient running either horizontally or vertically, going from `startValue` to `endValue`. It takes in `int width`, `int height`, `float startValue`, `float endValue` and `bool horizontal`. If `horizontal` is true the gradient runs left to right, otherwise top to bottom. Accepts any float values for start and end, so the output range mirrors whatever is passed in.
+    #### Function-version: BrickTiledSmoothBorderRandomBrickHeight
+    This is a version of the ```BrickTiledSmoothBorder``` static function that also takes ```Random rng``` in as an argument. this function is used when you want bricks of varying colors. the function works just the same as BrickTiledSmoothBorder, but instead of bricks always being value 1, the brick parts of the texture is a number between 1 and 2 (exclusive upper). this is usefull so you can use a colorRamp spesifically ```ColorRamp3BrickVariant```. when using this function for heightmap generation, you can simply clamp the result using ```clampHeightmap```to get a normal 0-1 result.
+
+### Function ChooseHigherColor
+This public function composites two albedo textures by choosing the color from whichever of the two corresponding heightmaps is higher at each pixel. It takes in `Texture2D albedo1`, `float[,] height1`, `Texture2D albedo2` and `float[,] height2`. All four inputs must be the same size, otherwise an error is logged and the program exits. Returns a `Texture2D` of the same size, where each pixel is taken from `albedo1` unless `height2` is greater than `height1` at that position.
+
+- This function is designed to be used alongside `HeightMapMax`, where `ChooseHigherColor` gives you the correct albedo and `HeightMapMax` gives you the correct heightmap for the composite result.
+
+### Function HeightMapMax
+This public function returns a heightmap `float[,]` where each pixel is the maximum value between two input heightmaps. It takes in `float[,] height1` and `float[,] height2`, which must be the same size, otherwise an error is logged and the program exits. Accepts any float values. Returns a heightmap `float[,]` of the same size.
+
+- This function is also the heightmap companion to `ChooseHigherColor` — using both together lets you correctly composite two textured surfaces by height, producing both the right albedo and the right heightmap for normal map generation.
+
+### Function HeightMapMin
+This public function returns a heightmap `float[,]` where each pixel is the minimum value between two input heightmaps. It takes in `float[,] height1` and `float[,] height2`, which must be the same size, otherwise an error is logged and the program exits. Accepts any float values. Returns a heightmap `float[,]` of the same size.
+
+### Function ColorRamp3BrickVariant
+This public function converts a heightmap `float[,]` into a `Texture2D` using a two-part color ramp designed for use with `BrickTiledSmoothBorderRandomBrickHeight`. It takes in a heightmap `float[,]`, `float threshold`, `Color color1`, `Color color2` and `Color color3`. The ramp is split into two regions: in the 0-1 range a constant ramp divides `color1` and `color2` at `threshold`, and in the 1-2 range a linear gradient runs from `color2` to `color3`. Values outside 0-2 are clamped.
 
 ### Function: ColorRamp2
 This public function converts a heightmap `float[,]` into a `Texture2D` by mapping its values between two colors. It takes in a heightmap `float[,]`, `Color color1` and `Color color2`, where `color1` corresponds to a heightmap value of `0` and `color2` corresponds to a value of `1`. Values are clamped to 0-1 before the color interpolation, so it is recommended to clamp the heightmap beforehand if it may contain out-of-range values. Returns a `Texture2D` of the same size as the input heightmap.
